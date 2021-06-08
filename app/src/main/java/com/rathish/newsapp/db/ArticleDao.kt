@@ -2,7 +2,7 @@ package com.rathish.newsapp.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.rathish.newsapp.ui.Article
+import com.rathish.newsapp.data.model.Article
 
 @Dao
 interface ArticleDao {

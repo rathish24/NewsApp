@@ -1,6 +1,6 @@
-package com.rathish.newsapp.api
+package com.rathish.newsapp.data.api
 
-import com.rathish.newsapp.ui.NewsResponse
+import com.rathish.newsapp.data.model.NewsResponse
 import com.rathish.newsapp.util.Constants.Companion.API_KEY
 import retrofit2.Response
 import retrofit2.http.GET

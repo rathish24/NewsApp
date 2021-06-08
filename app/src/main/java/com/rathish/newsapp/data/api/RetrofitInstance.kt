@@ -1,4 +1,4 @@
-package com.rathish.newsapp.api
+package com.rathish.newsapp.data.api
 
 import com.rathish.newsapp.util.Constants.Companion.BASE_URL
 import okhttp3.OkHttpClient

@@ -1,4 +1,4 @@
-package com.rathish.newsapp.ui
+package com.rathish.newsapp.data.model
 
 data class NewsResponse(
     val articles: List<Article>,

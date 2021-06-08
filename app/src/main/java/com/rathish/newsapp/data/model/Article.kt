@@ -2,13 +2,11 @@ package com.rathish.newsapp.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
-import com.rathish.newsapp.db.Converters
+
 
 @Entity(
     tableName = "articles"
 )
-
 data class Article(
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null,

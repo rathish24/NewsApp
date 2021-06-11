@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rathish.newsapp.R
@@ -67,6 +68,13 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)
         }
+        newsAdapter.setOnItemClickListner {
+            val bundle = Bundle().apply {
+                putSerializable("article",it)
+            }
+            findNavController().navigate(R.id.action_breakingNewsFragment_to_articleFragment,bundle)
+        }
     }
+
 
 }

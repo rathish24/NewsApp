@@ -3,6 +3,7 @@ package com.rathish.newsapp.ui
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rathish.newsapp.data.model.Article
 
 import com.rathish.newsapp.data.model.NewsResponse
 import com.rathish.newsapp.data.repository.NewsRepository
@@ -47,5 +48,16 @@ class NewsViewModel(val newsRepositry: NewsRepository):ViewModel() {
             }
         }
         return Resource.Error(response.message())
+    }
+
+    fun saveArticle(article: Article){
+        viewModelScope.launch {
+            newsRepositry.upsert(article)
+        }
+    }
+    fun getSavedNews() = newsRepositry.getSavedNews()
+
+    fun deleteArticle(article: Article) = viewModelScope.launch {
+        newsRepositry.deleteArticle(article)
     }
 }

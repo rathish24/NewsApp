@@ -100,7 +100,14 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)
         }
-        newsAdapter.setOnItemClickListner {
+
+//        newsAdapter.setOnItemClickListener {
+//            val bundle = Bundle().apply {
+//                putSerializable("article",it)
+//            }
+//            findNavController().navigate(R.id.action_searchNewsFragment_to_articleFragment,bundle)
+//        }
+        newsAdapter.onItemClickListener = {
             val bundle = Bundle().apply {
                 putSerializable("article",it)
             }

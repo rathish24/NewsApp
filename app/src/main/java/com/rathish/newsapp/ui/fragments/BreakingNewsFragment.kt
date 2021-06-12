@@ -68,12 +68,19 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)
         }
-        newsAdapter.setOnItemClickListner {
-            val bundle = Bundle().apply {
+//        newsAdapter.setOnItemClickListener {
+//            val bundle = Bundle().apply {
+//                putSerializable("article",it)
+//            }
+//            findNavController().navigate(R.id.action_breakingNewsFragment_to_articleFragment,bundle)
+//        }
+
+         newsAdapter.onItemClickListener = {
+                         val bundle = Bundle().apply {
                 putSerializable("article",it)
             }
             findNavController().navigate(R.id.action_breakingNewsFragment_to_articleFragment,bundle)
-        }
+         }
     }
 
 

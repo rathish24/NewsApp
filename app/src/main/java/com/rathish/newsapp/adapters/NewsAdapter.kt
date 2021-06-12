@@ -12,6 +12,11 @@ import com.bumptech.glide.Glide
 import com.rathish.newsapp.R
 import com.rathish.newsapp.data.model.Article
 
+interface onItemClicked {
+    fun onItemClick(article: Article)
+}
+
+
 class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
    inner class ArticleViewHolder (itemView: View): RecyclerView.ViewHolder(itemView){
        var tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
@@ -45,23 +50,30 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
         holder.itemView.apply {
             Glide.with(this).load(article.urlToImage).into(holder.ivArticleImage)
             holder.tvSource.text = article.source.name
-            holder.tvTitle.text= article.title
-            holder.tvDescription.text= article.description
-            holder.tvPublishedAt.text= article.publishedAt
-            setOnItemClickListner {
-                onItemClickListener?.let { it(article) }
-            }
+            holder.tvTitle.text = article.title
+            holder.tvDescription.text = article.description
+            holder.tvPublishedAt.text = article.publishedAt
+
+            holder.itemView.setOnClickListener {
+            println("itemclick called")
+             //   onItemClicked(article)
+                onItemClickListener?.invoke(article)
+        }
+//            setOnItemClickListener {
+//                onItemClickListener?.let {
+//                    it(article) }
+//            }
         }
     }
 
     override fun getItemCount(): Int {
         return differ.currentList.size
     }
-    private var onItemClickListener:((Article) -> Unit)? = null
+    var onItemClickListener:((Article) -> Unit)? = null
 
-    fun setOnItemClickListner(listner: (Article) ->Unit)
-    {
-        onItemClickListener = listner
-
-    }
+//    fun setOnItemClickListener(listener: (Article) ->Unit)
+//    {
+//        onItemClickListener = listener
+//
+//    }
 }

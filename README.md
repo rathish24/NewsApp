@@ -1,7 +1,15 @@
 
 # NewsApp
 
-NewsApp build using MVVM Concept
+NewsApp developed using MVVM kotlin.
+
+Topics Covered,
+ViewModel
+LiveData
+RoomDatabase
+Retrofit
+Coroutines
+
 
 <img src="https://user-images.githubusercontent.com/4945779/121785753-4de30f00-cbd9-11eb-85f6-bd175faa4b90.png" width="300" height="500">
 

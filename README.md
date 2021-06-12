@@ -3,7 +3,8 @@
 
 NewsApp developed using MVVM kotlin.
 
-Topics Covered,
+Topics Covered:
+
 ViewModel
 LiveData
 RoomDatabase

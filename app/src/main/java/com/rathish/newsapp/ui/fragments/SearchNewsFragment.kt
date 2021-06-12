@@ -5,6 +5,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.AbsListView
 import android.widget.EditText
 import android.widget.ProgressBar
 import androidx.core.widget.addTextChangedListener
@@ -17,6 +18,7 @@ import com.rathish.newsapp.R
 import com.rathish.newsapp.adapters.NewsAdapter
 import com.rathish.newsapp.ui.NewsActivity
 import com.rathish.newsapp.ui.NewsViewModel
+import com.rathish.newsapp.util.Constants
 import com.rathish.newsapp.util.Constants.Companion.SEARCH_NEWS_TIME_DELAY
 import com.rathish.newsapp.util.Resource
 import kotlinx.coroutines.Job
@@ -75,7 +77,12 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { newsResponse ->
-                        newsAdapter.differ.submitList(newsResponse.articles)
+                        newsAdapter.differ.submitList(newsResponse.articles.toList())
+                        val totalPages = newsResponse.totalResults / Constants.QUERY_PAGE_SIZE + 2
+                        isLastPage = viewModel.searchNewsPage == totalPages
+                        if(isLastPage){
+                            rvSearchNews.setPadding(0,0,0,0)
+                        }
                     }
                 }
                 is Resource.Error -> {
@@ -99,6 +106,7 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
         rvSearchNews.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)
+            rvSearchNews.addOnScrollListener(this@SearchNewsFragment.scrollListener)
         }
 
 //        newsAdapter.setOnItemClickListener {
@@ -117,9 +125,42 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
 
     private fun hideProgressBar() {
         progressBar.visibility = View.INVISIBLE
+        isLoading = false
     }
 
     private fun showProgressBar() {
         progressBar.visibility = View.VISIBLE
+        isLoading = true
+    }
+
+    var isLoading = false
+    var isLastPage = false
+    var isScrolling = false
+
+    val scrollListener = object : RecyclerView.OnScrollListener(){
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+            val visibleItemCount = layoutManager.childCount
+            val totalItemCount = layoutManager.itemCount
+
+            val isNotLoadingAndNotLastPAge = !isLoading && !isLastPage
+            val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
+            val isNotAtBegining = firstVisibleItemPosition >=0
+            val isTotalMoreThanVisible = totalItemCount >= Constants.QUERY_PAGE_SIZE
+            val shouldPaginate = isNotLoadingAndNotLastPAge && isAtLastItem && isNotAtBegining && isTotalMoreThanVisible && isScrolling
+            if(shouldPaginate){
+                viewModel.searchNews(etSearch.text.toString())
+                isScrolling = false
+            }
+        }
+
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                isScrolling = true
+            }
+        }
     }
 }
